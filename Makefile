@@ -3,6 +3,7 @@ BIN_NAME := proc-monitor
 SRC_FILES := $(wildcard *.go)
 BUILD_DIR := build
 TEST_FLAGS := -v -coverprofile=coverage.out
+DOCKER_COMPOSE := docker-compose
 
 # Default target
 all: build
@@ -15,15 +16,30 @@ run: build
 	@echo "Running $(BIN_NAME)..."
 	./$(BUILD_DIR)/$(BIN_NAME) -interval=1 -html=true -port=8080
 
-# Test the code
+# Run unit tests
 test:
-	@echo "Running tests..."
+	@echo "Running unit tests..."
 	go test $(TEST_FLAGS) ./...
 
 # Generate coverage report
 coverage: test
 	@echo "Generating coverage report..."
 	go tool cover -html=coverage.out -o coverage.html
+
+# Run end-to-end tests
+e2e-test:
+	@echo "Running end-to-end tests..."
+	go test -tags=e2e ./test/...
+
+# Start Prometheus and Grafana
+start-services:
+	@echo "Starting Prometheus and Grafana services..."
+	$(DOCKER_COMPOSE) up -d
+
+# Stop Prometheus and Grafana
+stop-services:
+	@echo "Stopping Prometheus and Grafana services..."
+	$(DOCKER_COMPOSE) down
 
 # Clean build artifacts
 clean:
@@ -46,7 +62,7 @@ $(BUILD_DIR):
 
 # Compile the binary
 $(BUILD_DIR)/$(BIN_NAME): $(SRC_FILES) | $(BUILD_DIR)
-	@echo "Building $(BIN_NAME)..."
-	go build -o $(BUILD_DIR)/$(BIN_NAME) .
+    @echo "Building $(BIN_NAME)..."
+    go build -o $(BUILD_DIR)/$(BIN_NAME) .
 
-.PHONY: all build run test coverage clean install uninstall
+.PHONY: all build run test coverage e2e-test start-services stop-services clean install uninstall
