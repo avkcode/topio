@@ -1,0 +1,4 @@
+# HELP process_rchar_bytes Number of bytes read from storage by the process.
+# TYPE process_rchar_bytes gauge
+process_rchar_bytes{pid="1234",label="test-process"} 1024
+process_wchar_bytes{pid="1234",label="test-process"} 512

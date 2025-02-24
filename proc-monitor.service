@@ -1,0 +1,15 @@
+[Unit]
+Description=Process Monitor Service
+After=network.target
+
+[Service]
+Type=simple
+User=nobody
+Group=nogroup
+WorkingDirectory=/path/to/your/project
+ExecStart=/usr/local/bin/proc-monitor -interval=1 -html=true -port=8080
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

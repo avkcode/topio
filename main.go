@@ -5,14 +5,13 @@ import (
 	"bytes"
 	"encoding/csv"
 	"flag"
-	"fmt"
 	"io/ioutil"
-	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
+	"fmt"
 )
 
 // ProcessInfo holds the extracted information for a process
@@ -108,7 +107,6 @@ func main() {
 	interval := flag.Int("interval", 1, "Polling interval in seconds")
 	outputFile := flag.String("output", "", "Output file (default: stdout)")
 	filterLabel := flag.String("filter", "", "Filter processes by label (e.g., 'wal writer')")
-	httpPort := flag.String("http", "", "Serve process information over HTTP on the specified port (e.g., ':8080')")
 	prometheusBind := flag.String("prometheus-bind", "0.0.0.0", "Bind address for Prometheus metrics server")
 	prometheusPort := flag.Int("prometheus-port", 9090, "Port for Prometheus metrics server")
 	flag.Parse()

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 	"sync"
 
 	"github.com/prometheus/client_golang/prometheus"
